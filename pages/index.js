@@ -1,65 +1,80 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useEffect, useState } from "react";
+import { useQuery, gql } from "@apollo/client";
+import { Box, Text } from "rebass";
+import { format } from "date-fns";
 
-export default function Home() {
+const GET_USER = gql`
+  query($username: String!) {
+    getUser(username: $username) {
+      logs {
+        lift
+        notes
+        rating
+        reps
+        timestamp
+        weight
+      }
+    }
+  }
+`;
+
+const GET_LIFTS = gql`
+  query {
+    getLifts {
+      full_name
+      id
+    }
+  }
+`;
+
+const Home = () => {
+  const { data } = useQuery(GET_USER, {
+    variables: { username: "test_user" },
+  });
+  const { data: liftsResp } = useQuery(GET_LIFTS);
+  const [liftList, setLiftList] = useState([]);
+  const [userLogs, setUserLogs] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setUserLogs(data.getUser.logs);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (liftsResp) {
+      console.log("?liftsResp", liftsResp);
+      setLiftList(liftsResp.getLifts);
+    }
+  }, [liftsResp]);
+
+  console.log("sdfdsgfjshjkafsgdjfgajfavjf", userLogs, liftList);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Box
+      sx={{
+        margin: [2, 4, 6],
+      }}
+    >
+      {!!userLogs.length &&
+        !!liftList.length &&
+        userLogs.map((userLog) => {
+          if (!userLog) return null;
+          const lift = liftList.find((lift) => lift.id === userLog.lift);
+          const date = new Date(Number(userLog.timestamp));
+          return (
+            <Box>
+              <Text>{lift.full_name}</Text>
+              <Text>{format(date, "MM/dd/yyyy h:mm a")}</Text>
+              <Text>{userLog.weight}lbs</Text>
+              <Text>{userLog.reps} reps</Text>
+              <Text>{userLog.rating}/5</Text>
+              <Text>{userLog.notes}</Text>
+            </Box>
+          );
+        })}
+    </Box>
+  );
+};
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
-}
+export default Home;
