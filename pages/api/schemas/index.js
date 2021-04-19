@@ -16,13 +16,10 @@ export const typeDefs = gql`
     logs: [Log]
   }
   type Lift {
-    id: String
     full_name: String
-    lift_type: String
-    lift_sub_type: String
+    id: String
   }
   type Query {
-    addLog(user: String!, log: LogInput): Log!
     getUsers: [User]
     getUser(username: String!): User!
     getLifts: [Lift]
@@ -35,7 +32,11 @@ export const typeDefs = gql`
     timestamp: String
     weight: Int
   }
+  input LiftInput {
+    full_name: String!
+  }
   type Mutation {
     addLog(user: String!, log: LogInput, existing_logs: [LogInput]): [Log]!
+    addLift(lift: LiftInput!): Lift!
   }
 `;

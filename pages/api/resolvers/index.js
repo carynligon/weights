@@ -39,11 +39,9 @@ export const resolvers = {
         const lifts = await fetch(
           "https://weights-be15c-default-rtdb.firebaseio.com/lifts/.json"
         ).then((data) => data.json());
-        return Object.keys(lifts).map((lift_key) => ({
-          id: lift_key,
-          full_name: lifts[lift_key].full_name,
-          lift_sub_type: lifts[lift_key].lift_sub_type,
-          lift_type: lifts[lift_key].lift_type,
+        return lifts.map((liftItem) => ({
+          id: liftItem.id,
+          full_name: liftItem.full_name,
         }));
       } catch (error) {
         throw error;
@@ -66,6 +64,28 @@ export const resolvers = {
           }
         ).then((data) => data.json());
         return allLogs;
+      } catch (error) {
+        throw error;
+      }
+    },
+    addLift: async (_, args) => {
+      const { lift } = args;
+      const { full_name } = lift;
+      try {
+        const existingLifts =
+          (await fetch(
+            `${config.api_base}.firebaseio.com/lifts/.json`
+          ).then((data) => data.json())) || [];
+        const id = full_name.toLowerCase().replace(/\s/g, "_");
+        const allLifts = [...existingLifts, { full_name, id }];
+        const newLift = await fetch(
+          `${config.api_base}.firebaseio.com/lifts/.json`,
+          {
+            method: "PUT",
+            body: JSON.stringify(allLifts),
+          }
+        ).then((data) => data.json());
+        return allLifts;
       } catch (error) {
         throw error;
       }
