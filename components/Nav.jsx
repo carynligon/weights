@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { Flex, Text, Box } from "rebass";
-import Link from "next/link";
+import { Flex, Link, Text, Box } from "rebass";
 
 const Nav = () => {
   const { pathname } = useRouter();
