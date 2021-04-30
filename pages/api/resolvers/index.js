@@ -1,4 +1,5 @@
 import config from "../../../.env/local.json";
+import firebase from "firebase";
 
 export const resolvers = {
   Query: {
@@ -22,13 +23,16 @@ export const resolvers = {
     getUser: async (_, args) => {
       try {
         const user = await fetch(
-          `${config.api_base}.firebaseio.com/users/${args.username}/.json`
+          `${config.api_base}.firebaseio.com/logs/${args.uid}/.json`
         ).then((data) => data.json());
+        const logs = Object.keys(user).map((key) => {
+          return { ...user[key]["0"] };
+        });
         return {
           username: user.username,
           first_name: user.first_name,
           last_name: user.last_name,
-          logs: user.logs,
+          logs: logs,
         };
       } catch (error) {
         throw error;
@@ -88,6 +92,38 @@ export const resolvers = {
         return allLifts;
       } catch (error) {
         throw error;
+      }
+    },
+    addUserLog: async (_, args) => {
+      const { uid, log } = args;
+      try {
+        const existingUserLogs =
+          (await fetch(
+            `${config.api_base}.firebaseio.com/logs/${uid}/.json`
+          ).then((d) => {
+            if (d && d.json) {
+              d.json();
+            }
+          })) || [];
+        const allLogs = [...existingUserLogs, { ...log }];
+        if (existingUserLogs.length) {
+          await fetch(`${config.api_base}.firebaseio.com/logs/${uid}/.json`, {
+            method: "PUT",
+            body: JSON.stringify([...existingUserLogs, { ...log }]),
+          }).then((d) => d.json());
+          return allLogs;
+        } else {
+          const resp = await fetch(
+            `${config.api_base}.firebaseio.com/logs/${uid}/.json`,
+            {
+              method: "POST",
+              body: JSON.stringify([{ ...log }]),
+            }
+          ).then((d) => d.json());
+          return allLogs;
+        }
+      } catch (e) {
+        console.error("Error adding user log!", e);
       }
     },
   },

@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 4rem auto;
+  max-width: 400px;
+
+  div {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+
+    input {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+    }
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}

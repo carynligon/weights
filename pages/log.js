@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import firebase from "firebase";
 import Select from "react-select";
 import { useMutation, useQuery, gql } from "@apollo/client";
 import { Box, Button, Heading, Text, Flex } from "rebass";
@@ -23,12 +24,21 @@ const ADD_LOG = gql`
   }
 `;
 
+const ADD_USER_LOG = gql`
+  mutation addUserLog($uid: String!, $log: LogInput) {
+    addUserLog(uid: $uid, log: $log) {
+      lift
+    }
+  }
+`;
+
 const Home = () => {
   const [modalIsOpen, setModalStatus] = useState(false);
   const [formState, updateFormState] = useState({});
   const [liftList, setLiftList] = useState([]);
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [addLog, { data }] = useMutation(ADD_LOG);
+  const [addUserLog, { data: userLogData }] = useMutation(ADD_USER_LOG);
 
   useEffect(() => {
     if (liftsResp) {
@@ -45,9 +55,22 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addLog({
+    // await addLog({
+    //   variables: {
+    //     user: "test_user",
+    //     log: {
+    //       lift: formState.lift,
+    //       notes: formState.notes,
+    //       rating: Number(formState.rating),
+    //       reps: Number(formState.reps),
+    //       timestamp: `${new Date().getTime()}`,
+    //       weight: Number(formState.weight),
+    //     },
+    //   },
+    // });
+    await addUserLog({
       variables: {
-        user: "test_user",
+        uid: sessionStorage.getItem("uid"),
         log: {
           lift: formState.lift,
           notes: formState.notes,
@@ -84,9 +107,22 @@ const Home = () => {
           options={options}
           isSearchable={true}
         />
-        <button onClick={() => setModalStatus(true)}>
+        <Button
+          mt={3}
+          sx={{
+            border: "1px solid black",
+            ":hover": {
+              backgroundColor: "black",
+              color: "white",
+              cursor: "pointer",
+            },
+          }}
+          backgroundColor="white"
+          color="black"
+          onClick={() => setModalStatus(true)}
+        >
           Don't see what you're looking for? Add a new lift!
-        </button>
+        </Button>
         <Modal
           style={{
             content: {

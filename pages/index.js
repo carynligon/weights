@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { Box, Text } from "rebass";
 import { format } from "date-fns";
 
 const GET_USER = gql`
-  query($username: String!) {
-    getUser(username: $username) {
+  query($uid: String!) {
+    getUser(uid: $uid) {
       logs {
         lift
         notes
@@ -28,16 +28,21 @@ const GET_LIFTS = gql`
 `;
 
 const Home = () => {
-  const { data } = useQuery(GET_USER, {
-    variables: { username: "test_user" },
-  });
+  // const { data } = useQuery(GET_USER, {
+  //   variables: { uid: sessionStorage.getItem("uid") },
+  // });
+  const [getUser, { loading, data }] = useLazyQuery(GET_USER);
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [liftList, setLiftList] = useState([]);
   const [userLogs, setUserLogs] = useState([]);
 
   useEffect(() => {
+    getUser({ variables: { uid: sessionStorage.getItem("uid") } });
+  }, []);
+
+  useEffect(() => {
     if (data) {
-      setUserLogs(data.getUser.logs);
+      setUserLogs(data.getUser.logs || []);
     }
   }, [data]);
 
@@ -46,6 +51,17 @@ const Home = () => {
       setLiftList(liftsResp.getLifts);
     }
   }, [liftsResp]);
+
+  const records = userLogs.reduce((acc, val) => {
+    if (acc[val.lift]) {
+      if (acc[val.lift] < val.weight) {
+        acc[val.lift] = val.weight;
+      }
+    } else {
+      acc[val.lift] = val.weight;
+    }
+    return acc;
+  }, {});
 
   return (
     <Box
@@ -78,6 +94,9 @@ const Home = () => {
               </Text>
               <Text>
                 <b>Notes:</b> {userLog.notes}
+              </Text>
+              <Text>
+                <b>PR:</b> {records[userLog.lift]}
               </Text>
             </Box>
           );
