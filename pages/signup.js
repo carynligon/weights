@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import firebase from "firebase";
-import styles from "../styles/Signup.module.scss";
+import { Button, Flex, Link } from "rebass";
+import { Label, Input } from "@rebass/forms";
 
 const SignupPage = () => {
   const { push } = useRouter();
@@ -21,31 +22,53 @@ const SignupPage = () => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email@email.com"
-        ></input>
-      </div>
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></input>
-      </div>
-      <button>Submit</button>
-    </form>
+    <Flex flexDirection="column" alignItems="center">
+      <Flex
+        as="form"
+        flexDirection="column"
+        alignItems="center"
+        margin="4rem auto"
+        maxWidth="600px"
+        onSubmit={handleSubmit}
+      >
+        <Flex justifyContent="flex-end" flexDirection="column">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            marginBottom={4}
+            type="text"
+            id="email"
+            name="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="email@email.com"
+          ></Input>
+        </Flex>
+        <Flex justifyContent="flex-end" flexDirection="column">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            marginBottom={4}
+            type="password"
+            id="password"
+            name="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          ></Input>
+        </Flex>
+        <Button variant="outline" type="submit">
+          Submit
+        </Button>
+      </Flex>
+      <Link href="/login">Log in</Link>
+    </Flex>
   );
 };
 
 export default SignupPage;
+
+const object = {
+  name: "Caryn",
+  age: 27,
+};
+
+Object.entries(object);
+// [['name', 'Caryn'], ['age', 27]]

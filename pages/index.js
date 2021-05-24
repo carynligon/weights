@@ -4,7 +4,7 @@ import { Box, Text } from "rebass";
 import { format } from "date-fns";
 
 const GET_USER = gql`
-  query($uid: String!) {
+  query ($uid: String!) {
     getUser(uid: $uid) {
       logs {
         lift
@@ -63,11 +63,14 @@ const Home = () => {
     return acc;
   }, {});
 
+  console.log("userLogs", userLogs);
+
   return (
     <Box
       sx={{
         margin: [2, 4, 6],
       }}
+      width="80%"
     >
       {!!userLogs.length &&
         !!liftList.length &&
@@ -76,7 +79,18 @@ const Home = () => {
           const lift = liftList.find((lift) => lift.id === userLog.lift);
           const date = new Date(Number(userLog.timestamp));
           return (
-            <Box mt={3} p={2} sx={{ border: "1px solid black" }}>
+            <Box
+              key={`${userLog.timestamp}-${lift.full_name}`}
+              mt={3}
+              p={2}
+              sx={{
+                backgroundColor: "white",
+                border: "1px solid black",
+                borderRadius: ".25rem",
+                boxShadow:
+                  "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+              }}
+            >
               <Text>
                 <b>Date:</b> {format(date, "MM/dd/yyyy h:mm a")}
               </Text>
