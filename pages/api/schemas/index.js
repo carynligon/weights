@@ -21,7 +21,7 @@ export const typeDefs = gql`
   }
   type Query {
     getUsers: [User]
-    getUser(username: String!): User!
+    getUser(uid: String!): User!
     getLifts: [Lift]
   }
   input LogInput {
@@ -37,6 +37,7 @@ export const typeDefs = gql`
   }
   type Mutation {
     addLog(user: String!, log: LogInput, existing_logs: [LogInput]): [Log]!
+    addUserLog(uid: String!, log: LogInput): [Log]!
     addLift(lift: LiftInput!): Lift!
   }
 `;

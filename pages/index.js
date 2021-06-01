@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { Box, Text } from "rebass";
 import { format } from "date-fns";
 
 const GET_USER = gql`
-  query($username: String!) {
-    getUser(username: $username) {
+  query ($uid: String!) {
+    getUser(uid: $uid) {
       logs {
         lift
         notes
@@ -28,16 +28,21 @@ const GET_LIFTS = gql`
 `;
 
 const Home = () => {
-  const { data } = useQuery(GET_USER, {
-    variables: { username: "test_user" },
-  });
+  // const { data } = useQuery(GET_USER, {
+  //   variables: { uid: sessionStorage.getItem("uid") },
+  // });
+  const [getUser, { loading, data }] = useLazyQuery(GET_USER);
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [liftList, setLiftList] = useState([]);
   const [userLogs, setUserLogs] = useState([]);
 
   useEffect(() => {
+    getUser({ variables: { uid: sessionStorage.getItem("uid") } });
+  }, []);
+
+  useEffect(() => {
     if (data) {
-      setUserLogs(data.getUser.logs);
+      setUserLogs(data.getUser.logs || []);
     }
   }, [data]);
 
@@ -47,11 +52,25 @@ const Home = () => {
     }
   }, [liftsResp]);
 
+  const records = userLogs.reduce((acc, val) => {
+    if (acc[val.lift]) {
+      if (acc[val.lift] < val.weight) {
+        acc[val.lift] = val.weight;
+      }
+    } else {
+      acc[val.lift] = val.weight;
+    }
+    return acc;
+  }, {});
+
+  console.log("userLogs", userLogs);
+
   return (
     <Box
       sx={{
         margin: [2, 4, 6],
       }}
+      width="80%"
     >
       {!!userLogs.length &&
         !!liftList.length &&
@@ -60,7 +79,18 @@ const Home = () => {
           const lift = liftList.find((lift) => lift.id === userLog.lift);
           const date = new Date(Number(userLog.timestamp));
           return (
-            <Box mt={3} p={2} sx={{ border: "1px solid black" }}>
+            <Box
+              key={`${userLog.timestamp}-${lift.full_name}`}
+              mt={3}
+              p={2}
+              sx={{
+                backgroundColor: "white",
+                border: "1px solid black",
+                borderRadius: ".25rem",
+                boxShadow:
+                  "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+              }}
+            >
               <Text>
                 <b>Date:</b> {format(date, "MM/dd/yyyy h:mm a")}
               </Text>
@@ -78,6 +108,9 @@ const Home = () => {
               </Text>
               <Text>
                 <b>Notes:</b> {userLog.notes}
+              </Text>
+              <Text>
+                <b>PR:</b> {records[userLog.lift]}
               </Text>
             </Box>
           );
