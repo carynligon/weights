@@ -34,7 +34,7 @@ const ADD_USER_LOG = gql`
 
 const Home = () => {
   const [modalIsOpen, setModalStatus] = useState(false);
-  const [formState, updateFormState] = useState({});
+  const [formState, updateFormState] = useState({ rating: "3" });
   const [liftList, setLiftList] = useState([]);
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [addLog, { data }] = useMutation(ADD_LOG);
@@ -55,19 +55,6 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // await addLog({
-    //   variables: {
-    //     user: "test_user",
-    //     log: {
-    //       lift: formState.lift,
-    //       notes: formState.notes,
-    //       rating: Number(formState.rating),
-    //       reps: Number(formState.reps),
-    //       timestamp: `${new Date().getTime()}`,
-    //       weight: Number(formState.weight),
-    //     },
-    //   },
-    // });
     await addUserLog({
       variables: {
         uid: sessionStorage.getItem("uid"),
@@ -76,7 +63,7 @@ const Home = () => {
           notes: formState.notes,
           rating: Number(formState.rating),
           reps: Number(formState.reps),
-          timestamp: `${new Date().getTime()}`,
+          timestamp: `${new Date(formState.time).getTime()}`,
           weight: Number(formState.weight),
         },
       },
@@ -98,7 +85,21 @@ const Home = () => {
         Log a lift
       </Heading>
       <form onSubmit={handleSubmit}>
-        <Label mt={5} htmlFor="lift-dropdown">
+        <Label mt={5} htmlFor="date-time">
+          Date & time
+        </Label>
+        <Input
+          id="date-time"
+          type="datetime-local"
+          backgroundColor="white"
+          onChange={(e) => {
+            updateFormState({
+              ...formState,
+              time: e.target.value,
+            });
+          }}
+        />
+        <Label mt={3} htmlFor="lift-dropdown">
           What did ya do?
         </Label>
         <Select
@@ -147,6 +148,7 @@ const Home = () => {
           id="reps"
           name="reps"
           type="number"
+          backgroundColor="white"
           onChange={(e) => {
             updateFormState({
               ...formState,
@@ -160,6 +162,7 @@ const Home = () => {
         <Input
           id="weight"
           name="weight"
+          backgroundColor="white"
           onChange={(e) => {
             updateFormState({
               ...formState,
@@ -171,6 +174,7 @@ const Home = () => {
           How'd it feel?
         </Label>
         <Slider
+          defaultValue={3}
           id="rating"
           name="rating"
           max={5}
@@ -187,6 +191,7 @@ const Home = () => {
         <Textarea
           id="notes"
           name="notes"
+          backgroundColor="white"
           onChange={(e) => {
             updateFormState({
               ...formState,

@@ -53,17 +53,18 @@ const Home = () => {
   }, [liftsResp]);
 
   const records = userLogs.reduce((acc, val) => {
-    if (acc[val.lift]) {
-      if (acc[val.lift] < val.weight) {
-        acc[val.lift] = val.weight;
+    if (acc[`${val.lift}-${val.reps}`]) {
+      if (acc[`${val.lift}-${val.reps}`] < val.weight) {
+        acc[`${val.lift}-${val.reps}`] = val.weight;
       }
     } else {
-      acc[val.lift] = val.weight;
+      acc[`${val.lift}-${val.reps}`] = val.weight;
     }
     return acc;
   }, {});
 
-  console.log("userLogs", userLogs);
+  const sortedLogs = [...userLogs];
+  sortedLogs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
 
   return (
     <Box
@@ -74,8 +75,7 @@ const Home = () => {
     >
       {!!userLogs.length &&
         !!liftList.length &&
-        userLogs.map((userLog) => {
-          if (!userLog) return null;
+        sortedLogs.map((userLog) => {
           const lift = liftList.find((lift) => lift.id === userLog.lift);
           const date = new Date(Number(userLog.timestamp));
           return (
@@ -110,7 +110,8 @@ const Home = () => {
                 <b>Notes:</b> {userLog.notes}
               </Text>
               <Text>
-                <b>PR:</b> {records[userLog.lift]}
+                <b>{userLog.reps} RM:</b>{" "}
+                {records[`${userLog.lift}-${userLog.reps}`]}
               </Text>
             </Box>
           );

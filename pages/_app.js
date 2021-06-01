@@ -55,7 +55,6 @@ function MyApp({ Component, pageProps }) {
         setUserAuthed(true);
       } else {
         // No user is signed in.
-        console.log("no user is signed in");
         setUserAuthed(false);
       }
     });

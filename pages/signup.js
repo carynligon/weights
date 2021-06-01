@@ -22,13 +22,18 @@ const SignupPage = () => {
   };
 
   return (
-    <Flex flexDirection="column" alignItems="center">
+    <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <Flex
         as="form"
+        backgroundColor="white"
         flexDirection="column"
         alignItems="center"
-        margin="4rem auto"
         maxWidth="600px"
+        padding="5"
+        sx={{
+          borderRadius: "1rem",
+          boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+        }}
         onSubmit={handleSubmit}
       >
         <Flex justifyContent="flex-end" flexDirection="column">
@@ -38,6 +43,9 @@ const SignupPage = () => {
             type="text"
             id="email"
             name="email"
+            paddingX="3"
+            paddingY="2"
+            minWidth="250px"
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@email.com"
           ></Input>
@@ -49,16 +57,31 @@ const SignupPage = () => {
             type="password"
             id="password"
             name="password"
+            paddingX="3"
+            paddingY="2"
+            minWidth="250px"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           ></Input>
         </Flex>
-        <Button variant="outline" type="submit">
+        <Button backgroundColor="black" type="submit">
           Submit
         </Button>
+
+        <p>
+          Already have an account?
+          <Link
+            fontWeight="bold"
+            marginTop="5"
+            padding="1"
+            sx={{ textDecoration: "underline" }}
+            href="/login"
+          >
+            Log in
+          </Link>
+        </p>
       </Flex>
-      <Link href="/login">Log in</Link>
     </Flex>
   );
 };
