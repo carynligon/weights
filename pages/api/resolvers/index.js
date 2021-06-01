@@ -38,7 +38,7 @@ export const resolvers = {
     getLifts: async () => {
       try {
         const lifts = await fetch(
-          "https://weights-be15c-default-rtdb.firebaseio.com/lifts/.json"
+          "${process.env.api_base}.firebaseio.com/lifts/.json"
         ).then((data) => data.json());
         return lifts.map((liftItem) => ({
           id: liftItem.id,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import { Flex, Button } from "rebass";
 import { Label, Input, Textarea, Radio, Slider, Checkbox } from "@rebass/forms";
 import { useMutation, gql } from "@apollo/client";
@@ -12,6 +13,7 @@ const ADD_LIFT = gql`
 `;
 
 const NewLiftForm = ({ setModalStatus }) => {
+  const { push } = useRouter();
   const [liftName, updateLiftName] = useState("");
   const [addLift, { data }] = useMutation(ADD_LIFT);
 
@@ -19,6 +21,7 @@ const NewLiftForm = ({ setModalStatus }) => {
     e.preventDefault();
     addLift({ variables: { lift: { full_name: liftName } } });
     setModalStatus(false);
+    push("/log");
   };
 
   return (

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import firebase from "firebase";
 import Select from "react-select";
 import { useMutation, useQuery, gql } from "@apollo/client";
@@ -32,7 +33,8 @@ const ADD_USER_LOG = gql`
   }
 `;
 
-const Home = () => {
+const NewLogPage = () => {
+  const { push } = useRouter();
   const [modalIsOpen, setModalStatus] = useState(false);
   const [formState, updateFormState] = useState({ rating: "3" });
   const [liftList, setLiftList] = useState([]);
@@ -63,11 +65,14 @@ const Home = () => {
           notes: formState.notes,
           rating: Number(formState.rating),
           reps: Number(formState.reps),
-          timestamp: `${new Date(formState.time).getTime()}`,
+          timestamp: `${new Date(
+            `${formState.date} ${formState.time}`
+          ).getTime()}`,
           weight: Number(formState.weight),
         },
       },
     });
+    push("/");
   };
 
   const options = liftList.map((lift) => ({
@@ -85,12 +90,26 @@ const Home = () => {
         Log a lift
       </Heading>
       <form onSubmit={handleSubmit}>
-        <Label mt={5} htmlFor="date-time">
-          Date & time
+        <Label mt={5} htmlFor="date">
+          Date
         </Label>
         <Input
-          id="date-time"
-          type="datetime-local"
+          id="date"
+          type="date"
+          backgroundColor="white"
+          onChange={(e) => {
+            updateFormState({
+              ...formState,
+              date: e.target.value,
+            });
+          }}
+        />
+        <Label mt={3} htmlFor="time">
+          Time
+        </Label>
+        <Input
+          id="time"
+          type="time"
           backgroundColor="white"
           onChange={(e) => {
             updateFormState({
@@ -109,16 +128,14 @@ const Home = () => {
           isSearchable={true}
         />
         <Button
-          mt={3}
+          mt={1}
           sx={{
-            border: "1px solid black",
             ":hover": {
-              backgroundColor: "black",
-              color: "white",
               cursor: "pointer",
+              textDecoration: "underline",
             },
           }}
-          backgroundColor="white"
+          backgroundColor="transparent"
           color="black"
           onClick={() => setModalStatus(true)}
         >
@@ -219,4 +236,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NewLogPage;
