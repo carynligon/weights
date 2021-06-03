@@ -3,7 +3,7 @@ export const resolvers = {
     getUsers: async () => {
       try {
         const users = await fetch(
-          `${process.env.api_base}.firebaseio.com/users/.json`
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/users/.json`
         ).then((data) => data.json());
         return Object.values(users).map(
           ({ username, first_name, last_name, logs }) => ({
@@ -20,7 +20,7 @@ export const resolvers = {
     getUser: async (_, args) => {
       try {
         const user = await fetch(
-          `${process.env.api_base}.firebaseio.com/logs/${args.uid}/.json`
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${args.uid}/.json`
         ).then((data) => data.json());
         const logs = Object.keys(user).map((key) => {
           return { ...user[key]["0"] };
@@ -38,7 +38,7 @@ export const resolvers = {
     getLifts: async () => {
       try {
         const lifts = await fetch(
-          "${process.env.api_base}.firebaseio.com/lifts/.json"
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/lifts/.json`
         ).then((data) => data.json());
         return lifts.map((liftItem) => ({
           id: liftItem.id,
@@ -54,11 +54,11 @@ export const resolvers = {
       const { log } = args;
       try {
         const user = await fetch(
-          `${process.env.api_base}.firebaseio.com/users/${args.user}/.json`
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/users/${args.user}/.json`
         ).then((data) => data.json());
         const allLogs = [...user.logs, log];
         await fetch(
-          `${process.env.api_base}.firebaseio.com/users/${args.user}/logs/.json`,
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/users/${args.user}/logs/.json`,
           {
             method: "PUT",
             body: JSON.stringify(allLogs),
@@ -75,12 +75,12 @@ export const resolvers = {
       try {
         const existingLifts =
           (await fetch(
-            `${process.env.api_base}.firebaseio.com/lifts/.json`
+            `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/lifts/.json`
           ).then((data) => data.json())) || [];
         const id = full_name.toLowerCase().replace(/\s/g, "_");
         const allLifts = [...existingLifts, { full_name, id }];
         const newLift = await fetch(
-          `${process.env.api_base}.firebaseio.com/lifts/.json`,
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/lifts/.json`,
           {
             method: "PUT",
             body: JSON.stringify(allLifts),
@@ -96,7 +96,7 @@ export const resolvers = {
       try {
         const existingUserLogs =
           (await fetch(
-            `${process.env.api_base}.firebaseio.com/logs/${uid}/.json`
+            `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${uid}/.json`
           ).then((d) => {
             if (d && d.json) {
               d.json();
@@ -105,7 +105,7 @@ export const resolvers = {
         const allLogs = [...existingUserLogs, { ...log }];
         if (existingUserLogs.length) {
           await fetch(
-            `${process.env.api_base}.firebaseio.com/logs/${uid}/.json`,
+            `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${uid}/.json`,
             {
               method: "PUT",
               body: JSON.stringify([...existingUserLogs, { ...log }]),
@@ -114,7 +114,7 @@ export const resolvers = {
           return allLogs;
         } else {
           const resp = await fetch(
-            `${process.env.api_base}.firebaseio.com/logs/${uid}/.json`,
+            `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${uid}/.json`,
             {
               method: "POST",
               body: JSON.stringify([{ ...log }]),

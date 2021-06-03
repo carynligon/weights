@@ -33,13 +33,13 @@ function MyApp({ Component, pageProps }) {
 
   const initFB = async () => {
     const firebaseConfig = {
-      apiKey: process.env.api_key,
-      authDomain: `${process.env.fb_app_name}.firebaseapp.com`,
-      databaseURL: `https://${process.env.fb_app_name}-default-rtdb.firebaseio.com`,
-      projectId: process.env.fb_app_name,
-      storageBucket: `${process.env.fb_app_name}.appspot.com`,
+      apiKey: process.env.NEXT_PUBLIC_API_KEY,
+      authDomain: `${process.env.NEXT_PUBLIC_FB_APP_NAME}.firebaseapp.com`,
+      databaseURL: `https://${process.env.NEXT_PUBLIC_FB_APP_NAME}-default-rtdb.firebaseio.com`,
+      projectId: process.env.FB_APP_NAME,
+      storageBucket: `${process.env.NEXT_PUBLIC_FB_APP_NAME}.appspot.com`,
       messagingSenderId: "71747450342",
-      appId: process.env.api_id,
+      appId: process.env.NEXT_PUBLIC_API_ID,
     };
     const storedUID = sessionStorage.getItem("uid");
     const userStuff = {};
