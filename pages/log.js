@@ -42,6 +42,8 @@ const NewLogPage = () => {
   const [addLog, { data }] = useMutation(ADD_LOG);
   const [addUserLog, { data: userLogData }] = useMutation(ADD_USER_LOG);
 
+  console.log("formState", formState);
+
   useEffect(() => {
     if (liftsResp) {
       setLiftList(liftsResp.getLifts);
@@ -105,6 +107,7 @@ const NewLogPage = () => {
             });
           }}
         />
+        <p>{formState.date}</p>
         <Label mt={3} htmlFor="time">
           Time
         </Label>
@@ -120,6 +123,7 @@ const NewLogPage = () => {
             });
           }}
         />
+        <p>{formState.time}</p>
         <Label mt={3} htmlFor="lift-dropdown">
           What did ya do?
         </Label>
