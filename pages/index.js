@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
-import { Box, Text } from "rebass";
+import { Box, Flex, Text } from "rebass";
 import { format } from "date-fns";
 
 const GET_USER = gql`
@@ -78,6 +78,9 @@ const Home = () => {
         sortedLogs.map((userLog) => {
           const lift = liftList.find((lift) => lift.id === userLog.lift);
           const date = new Date(Number(userLog.timestamp));
+          const isPR =
+            records[`${userLog.lift}-${userLog.reps}`] === userLog.weight;
+
           return (
             <Box
               key={`${userLog.timestamp}-${lift.full_name}`}
@@ -109,10 +112,13 @@ const Home = () => {
               <Text>
                 <b>Notes:</b> {userLog.notes}
               </Text>
-              <Text>
-                <b>{userLog.reps} RM:</b>{" "}
-                {records[`${userLog.lift}-${userLog.reps}`]}
-              </Text>
+              <Flex alignItems="center">
+                <Text fontWeight={isPR ? "bold" : ""}>
+                  <b>{userLog.reps} RM:</b>{" "}
+                  {records[`${userLog.lift}-${userLog.reps}`]}
+                </Text>
+                {isPR && <Text marginLeft="1">&#x1F44F;</Text>}
+              </Flex>
             </Box>
           );
         })}

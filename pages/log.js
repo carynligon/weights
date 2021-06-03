@@ -97,6 +97,7 @@ const NewLogPage = () => {
           id="date"
           type="date"
           backgroundColor="white"
+          placeholder="mm/dd/yyyy"
           onChange={(e) => {
             updateFormState({
               ...formState,
@@ -111,6 +112,7 @@ const NewLogPage = () => {
           id="time"
           type="time"
           backgroundColor="white"
+          placeholder="--:-- --"
           onChange={(e) => {
             updateFormState({
               ...formState,
