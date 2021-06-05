@@ -95,7 +95,8 @@ const Home = () => {
               }}
             >
               <Text>
-                <b>Date:</b> {format(date, "MM/dd/yyyy h:mm a")}
+                <b>Date:</b>{" "}
+                {!isNaN(date) ? format(date, "MM/dd/yyyy h:mm a") : `${date}`}
               </Text>
               <Text>
                 <b>Lift:</b> {lift.full_name}
