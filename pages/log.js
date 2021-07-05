@@ -65,9 +65,7 @@ const NewLogPage = () => {
           notes: formState.notes,
           rating: Number(formState.rating),
           reps: Number(formState.reps),
-          timestamp: `${new Date(
-            `${formState.date} ${formState.time}`
-          ).getTime()}`,
+          timestamp: `${new Date(`${formState.date}`).getTime()}`,
           weight: Number(formState.weight),
         },
       },
@@ -106,22 +104,6 @@ const NewLogPage = () => {
           }}
         />
         <p>{formState.date}</p>
-        <Label mt={3} htmlFor="time">
-          Time
-        </Label>
-        <Input
-          id="time"
-          type="time"
-          backgroundColor="white"
-          placeholder="--:-- --"
-          onChange={(e) => {
-            updateFormState({
-              ...formState,
-              time: e.target.value,
-            });
-          }}
-        />
-        <p>{formState.time}</p>
         <Label mt={3} htmlFor="lift-dropdown">
           What did ya do?
         </Label>
