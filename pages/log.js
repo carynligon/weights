@@ -42,8 +42,6 @@ const NewLogPage = () => {
   const [addLog, { data }] = useMutation(ADD_LOG);
   const [addUserLog, { data: userLogData }] = useMutation(ADD_USER_LOG);
 
-  console.log("formState", formState);
-
   useEffect(() => {
     if (liftsResp) {
       setLiftList(liftsResp.getLifts);
@@ -91,7 +89,7 @@ const NewLogPage = () => {
       <Heading fontSize={[4, 5, 6]} color="primary">
         Log a lift
       </Heading>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Label mt={5} htmlFor="date">
           Date
         </Label>
@@ -232,7 +230,7 @@ const NewLogPage = () => {
             }}
             backgroundColor="black"
             color="white"
-            type="submit"
+            onClick={handleSubmit}
           >
             Add
           </Button>

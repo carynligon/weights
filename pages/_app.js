@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ThemeProvider } from "@emotion/react";
 import { preset } from "@rebass/preset";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Box, Flex } from "rebass";
 import Nav from "../components/Nav";
 import "../styles/globals.scss";
@@ -30,6 +31,7 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }) {
   const [userAuthed, setUserAuthed] = useState(false);
+  const { push } = useRouter();
 
   const initFB = async () => {
     const firebaseConfig = {
@@ -55,6 +57,7 @@ function MyApp({ Component, pageProps }) {
         setUserAuthed(true);
       } else {
         // No user is signed in.
+        push("/login");
         setUserAuthed(false);
       }
     });
