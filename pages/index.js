@@ -76,13 +76,14 @@ const Home = () => {
       {!!userLogs.length &&
         !!liftList.length &&
         sortedLogs.map((userLog) => {
-          const lift = liftList.find((lift) => lift.id === userLog.lift);
+          const lift = liftList.find((lift) => lift.id === userLog.lift) || {};
           const date = new Date(Number(userLog.timestamp));
           const isPR =
             records[`${userLog.lift}-${userLog.reps}`] === userLog.weight;
 
           return (
-            <Box
+            <Flex
+              justifyContent="space-between"
               key={`${userLog.timestamp}-${lift.full_name}`}
               mt={3}
               p={2}
@@ -94,33 +95,39 @@ const Home = () => {
                   "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
               }}
             >
-              <Text>
-                <b>Date:</b>{" "}
-                {!isNaN(date) ? format(date, "MM/dd/yyyy h:mm a") : `${date}`}
-              </Text>
-              <Text>
-                <b>Lift:</b> {lift.full_name}
-              </Text>
-              <Text>
-                <b>Weight:</b> {userLog.weight}lbs
-              </Text>
-              <Text>
-                <b>Reps:</b> {userLog.reps}
-              </Text>
-              <Text>
-                <b>Rating:</b> {userLog.rating}/5
-              </Text>
-              <Text>
-                <b>Notes:</b> {userLog.notes}
-              </Text>
-              <Flex alignItems="center">
-                <Text fontWeight={isPR ? "bold" : ""}>
-                  <b>{userLog.reps} RM:</b>{" "}
-                  {records[`${userLog.lift}-${userLog.reps}`]}
+              <Flex flexDirection="column">
+                <Text>
+                  <b>Date:</b>{" "}
+                  {!isNaN(date) ? format(date, "iii, MM/dd/yyyy") : `${date}`}
                 </Text>
-                {isPR && <Text marginLeft="1">&#x1F44F;</Text>}
+                <Text>
+                  <b>Lift:</b> {lift.full_name}
+                </Text>
+                <Text>
+                  <b>Weight:</b> {userLog.weight}lbs
+                </Text>
+                <Text>
+                  <b>Reps:</b> {userLog.reps}
+                </Text>
+                <Text>
+                  <b>Rating:</b> {userLog.rating}/5
+                </Text>
+                <Text>
+                  <b>Notes:</b> {userLog.notes}
+                </Text>
+                <Flex alignItems="center">
+                  <Text fontWeight={isPR ? "bold" : ""}>
+                    <b>{userLog.reps} RM:</b>{" "}
+                    {records[`${userLog.lift}-${userLog.reps}`]}
+                  </Text>
+                  {isPR && <Text marginLeft="1">&#x1F44F;</Text>}
+                </Flex>
               </Flex>
-            </Box>
+              <Flex flexDirection="column">
+                <p>edit</p>
+                <p>delete</p>
+              </Flex>
+            </Flex>
           );
         })}
     </Box>

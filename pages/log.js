@@ -113,20 +113,6 @@ const NewLogPage = () => {
           options={options}
           isSearchable={true}
         />
-        <Button
-          mt={1}
-          sx={{
-            ":hover": {
-              cursor: "pointer",
-              textDecoration: "underline",
-            },
-          }}
-          backgroundColor="transparent"
-          color="black"
-          onClick={() => setModalStatus(true)}
-        >
-          Don't see what you're looking for? Add a new lift!
-        </Button>
         <Modal
           style={{
             content: {
@@ -218,6 +204,20 @@ const NewLogPage = () => {
           </Button>
         </Flex>
       </form>
+      <Button
+        mt={1}
+        sx={{
+          ":hover": {
+            cursor: "pointer",
+            textDecoration: "underline",
+          },
+        }}
+        backgroundColor="transparent"
+        color="black"
+        onClick={() => setModalStatus(true)}
+      >
+        Don't see what you're looking for? Add a new lift!
+      </Button>
     </Box>
   );
 };
