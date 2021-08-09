@@ -1,8 +1,7 @@
 import Image from "next/image";
-import editIcon from "../public/edit.svg";
 import deleteIcon from "../public/delete.svg";
 import { Box, Button, Flex, Text } from "rebass";
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { format } from "date-fns";
 
 const DELETE_USER_LOG = gql`
@@ -78,20 +77,6 @@ const LogItem = ({ userLog, lift, records }) => {
               cursor: "pointer",
             },
           }}
-          // backgroundColor="black"
-          color="white"
-          // onClick={handleSubmit}
-        >
-          <Image src={editIcon} alt="edit icon" />
-        </Button>
-        <Button
-          mt={3}
-          sx={{
-            ":hover": {
-              cursor: "pointer",
-            },
-          }}
-          // backgroundColor="black"
           color="white"
           onClick={deleteLog}
         >
