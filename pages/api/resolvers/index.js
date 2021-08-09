@@ -23,7 +23,7 @@ export const resolvers = {
           `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${args.uid}/.json`
         ).then((data) => data.json());
         const logs = Object.keys(user).map((key) => {
-          return { ...user[key]["0"] };
+          return { ...user[key]["0"], id: key };
         });
         return {
           username: user.username,
@@ -124,6 +124,17 @@ export const resolvers = {
         }
       } catch (e) {
         console.error("Error adding user log!", e);
+      }
+    },
+    deleteUserLog: async (_, args) => {
+      const { id, uid } = args;
+      try {
+        const resp = await fetch(
+          `${process.env.NEXT_PUBLIC_RTDB_URL}.firebaseio.com/logs/${uid}/${id}/.json`,
+          { method: "DELETE" }
+        ).then((d) => d.json());
+      } catch (e) {
+        console.error("Error deleting log!", e);
       }
     },
   },

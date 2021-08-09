@@ -7,6 +7,7 @@ export const typeDefs = gql`
     rating: Int
     reps: Int
     timestamp: String
+    id: String
     weight: Int
   }
   type User {
@@ -39,5 +40,6 @@ export const typeDefs = gql`
     addLog(user: String!, log: LogInput, existing_logs: [LogInput]): [Log]!
     addUserLog(uid: String!, log: LogInput): [Log]!
     addLift(lift: LiftInput!): Lift!
+    deleteUserLog(uid: String!, id: String!): Log
   }
 `;
