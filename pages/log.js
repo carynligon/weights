@@ -102,6 +102,9 @@ const NewLogPage = () => {
               date: e.target.value,
             });
           }}
+          sx={{
+            height: "2.25rem",
+          }}
         />
         <p>{formState.date}</p>
         <Label mt={3} htmlFor="lift-dropdown">

@@ -72,8 +72,11 @@ const Home = () => {
     <Box
       sx={{
         margin: [2, 4, 6],
+        "@media screen and (max-width: 767px)": {
+          width: "90%",
+        },
+        width: "80%",
       }}
-      width="80%"
     >
       {!!userLogs.length &&
         !!liftList.length &&

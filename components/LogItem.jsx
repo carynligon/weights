@@ -41,7 +41,7 @@ const LogItem = ({ userLog, lift, records }) => {
         boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
       }}
     >
-      <Flex flexDirection="column">
+      <Flex flexDirection="column" maxWidth="85%">
         <Text>
           <b>Date:</b>{" "}
           {!isNaN(date) ? format(date, "iii, MM/dd/yyyy") : `${date}`}
@@ -76,11 +76,14 @@ const LogItem = ({ userLog, lift, records }) => {
             ":hover": {
               cursor: "pointer",
             },
+            display: "flex",
+            justifyContent: "center",
+            width: "15px",
           }}
-          color="white"
+          color="black"
           onClick={deleteLog}
         >
-          <Image src={deleteIcon} alt="delete icon" />
+          <span>X</span>
         </Button>
       </Flex>
     </Flex>
