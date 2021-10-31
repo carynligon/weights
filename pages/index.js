@@ -87,7 +87,7 @@ const Home = () => {
       <p>View by lift:</p>
       <select onChange={handleSelectChange}>
         <option disabled selected>
-          {""}
+          Select a lift
         </option>
         {liftList.map((lift) => (
           <option value={lift.id}>{lift.full_name}</option>

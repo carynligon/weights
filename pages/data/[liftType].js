@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box } from "rebass";
+import { Box, Button } from "rebass";
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import {
   LineChart,
@@ -82,26 +82,46 @@ const DataPage = () => {
   }, {});
 
   return (
-    <Box backgroundColor="white" width="90%" height="300px">
-      <button onClick={() => back()}>Back</button>
+    <Box width="90%" height="300px">
+      <Button
+        mt={3}
+        sx={{
+          ":hover": {
+            cursor: "pointer",
+          },
+        }}
+        backgroundColor="black"
+        color="white"
+        onClick={() => back()}
+      >
+        Back
+      </Button>
       <h2>{(liftObj || {}).full_name}</h2>
       {liftsOfType.length && (
-        <ResponsiveContainer width="100%">
+        <ResponsiveContainer height="100%" width="100%">
           <LineChart
-            width={350}
-            height={270}
             data={liftsOfType}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="timestamp" />
-            <YAxis dataKey="weight" />
-            <Tooltip />
-            <Legend />
+            <XAxis
+              dataKey="timestamp"
+              tickFormatter={(tick) => {
+                const date = new Date(Number(tick));
+                return format(date, "MM/dd");
+              }}
+            />
+            <YAxis dataKey="weight" tickFormatter={(tick) => `${tick}lbs`} />
+            <Tooltip
+              labelFormatter={(val) => {
+                const date = new Date(Number(val));
+                return format(date, "MM/dd");
+              }}
+            />
             <Line
               type="monotone"
               dataKey="weight"
-              stroke="#84edac"
+              stroke="#000"
               strokeWidth="2"
             />
           </LineChart>
