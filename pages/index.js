@@ -84,13 +84,15 @@ const Home = () => {
         width: "80%",
       }}
     >
-      <form>
-        <select onChange={handleSelectChange}>
-          {liftList.map((lift) => (
-            <option value={lift.id}>{lift.full_name}</option>
-          ))}
-        </select>
-      </form>
+      <p>View by lift:</p>
+      <select onChange={handleSelectChange}>
+        <option disabled selected>
+          {""}
+        </option>
+        {liftList.map((lift) => (
+          <option value={lift.id}>{lift.full_name}</option>
+        ))}
+      </select>
       {!!userLogs.length &&
         !!liftList.length &&
         sortedLogs.map((userLog) => {

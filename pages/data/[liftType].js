@@ -40,7 +40,7 @@ const GET_LIFTS = gql`
 `;
 
 const DataPage = () => {
-  const { query } = useRouter();
+  const { back, query } = useRouter();
   const [getUser, { loading, data }] = useLazyQuery(GET_USER);
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [userLogs, setUserLogs] = useState([]);
@@ -83,6 +83,7 @@ const DataPage = () => {
 
   return (
     <Box backgroundColor="white" width="90%" height="300px">
+      <button onClick={() => back()}>Back</button>
       <h2>{(liftObj || {}).full_name}</h2>
       {liftsOfType.length && (
         <ResponsiveContainer width="100%">
