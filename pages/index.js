@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { Box, Button, Flex, Text } from "rebass";
 import LogItem from "../components/LogItem";
@@ -37,6 +38,7 @@ const Home = () => {
   const { data: liftsResp } = useQuery(GET_LIFTS);
   const [liftList, setLiftList] = useState([]);
   const [userLogs, setUserLogs] = useState([]);
+  const { push } = useRouter();
 
   useEffect(() => {
     getUser({ variables: { uid: sessionStorage.getItem("uid") } });
@@ -68,6 +70,10 @@ const Home = () => {
   const sortedLogs = [...userLogs];
   sortedLogs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
 
+  const handleSelectChange = (e) => {
+    push(`/data/${e.target.value}`);
+  };
+
   return (
     <Box
       sx={{
@@ -78,6 +84,13 @@ const Home = () => {
         width: "80%",
       }}
     >
+      <form>
+        <select onChange={handleSelectChange}>
+          {liftList.map((lift) => (
+            <option value={lift.id}>{lift.full_name}</option>
+          ))}
+        </select>
+      </form>
       {!!userLogs.length &&
         !!liftList.length &&
         sortedLogs.map((userLog) => {

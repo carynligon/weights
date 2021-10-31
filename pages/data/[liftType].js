@@ -12,6 +12,7 @@ import {
   Line,
   ResponsiveContainer,
 } from "recharts";
+import { format } from "date-fns";
 
 const GET_USER = gql`
   query ($uid: String!) {
@@ -29,10 +30,25 @@ const GET_USER = gql`
   }
 `;
 
+const GET_LIFTS = gql`
+  query {
+    getLifts {
+      full_name
+      id
+    }
+  }
+`;
+
 const DataPage = () => {
   const { query } = useRouter();
   const [getUser, { loading, data }] = useLazyQuery(GET_USER);
+  const { data: liftsResp } = useQuery(GET_LIFTS);
   const [userLogs, setUserLogs] = useState([]);
+  const [liftList, setLiftList] = useState([]);
+
+  const liftObj = liftList.find((lift) => lift.id === query.liftType);
+
+  console.log("liftObj", liftObj);
 
   useEffect(() => {
     getUser({ variables: { uid: sessionStorage.getItem("uid") } });
@@ -44,14 +60,30 @@ const DataPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (liftsResp) {
+      setLiftList(liftsResp.getLifts);
+    }
+  }, [liftsResp]);
+
   const liftsOfType = userLogs.length
     ? userLogs.filter((log) => log.lift === query.liftType)
     : [];
 
-  console.log("liftsOfType", liftsOfType);
+  const repMaxes = liftsOfType.reduce((acc, val) => {
+    if (acc[val.reps]) {
+      if (acc[val.reps].weight < val.weight) {
+        acc[val.reps] = val;
+      }
+    } else {
+      acc[val.reps] = val;
+    }
+    return acc;
+  }, {});
 
   return (
     <Box backgroundColor="white" width="90%" height="300px">
+      <h2>{(liftObj || {}).full_name}</h2>
       {liftsOfType.length && (
         <ResponsiveContainer width="100%">
           <LineChart
@@ -74,6 +106,23 @@ const DataPage = () => {
           </LineChart>
         </ResponsiveContainer>
       )}
+      <h3>Rep maxes:</h3>
+      {Object.entries(repMaxes).map(([repCount, userLog]) => {
+        console.log("??", userLog);
+        const date = new Date(Number(userLog.timestamp));
+        return (
+          <div>
+            <span>
+              {repCount} rep{Number(repCount) > 1 ? "s" : ""}:{" "}
+            </span>
+            <span>{userLog.weight}lbs</span>
+            <span>
+              {" "}
+              ({!isNaN(date) ? format(date, "MM/dd/yyyy") : `${date}`})
+            </span>
+          </div>
+        );
+      })}
     </Box>
   );
 };
