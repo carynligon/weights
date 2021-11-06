@@ -6,6 +6,7 @@ import { preset } from "@rebass/preset";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Box, Flex } from "rebass";
+import UserContext from "../contexts/user";
 import Nav from "../components/Nav";
 import "../styles/globals.scss";
 
@@ -31,6 +32,7 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps }) {
   const [userAuthed, setUserAuthed] = useState(false);
+  const [uid, setUID] = useState("");
   const { push } = useRouter();
 
   const initFB = async () => {
@@ -54,6 +56,7 @@ function MyApp({ Component, pageProps }) {
           sessionStorage.setItem("uid", user.uid);
         }
         userStuff.uid = user.uid;
+        setUID(userStuff.uid);
         setUserAuthed(true);
       } else {
         // No user is signed in.
@@ -66,17 +69,20 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     initFB();
   }, []);
+
   return (
-    <ThemeProvider theme={theme}>
-      <Flex flexDirection="column" minHeight="100vh">
-        <Nav userAuthed={userAuthed} />
-        <Flex justifyContent="center" flexGrow="1">
-          <ApolloProvider client={client}>
-            <Component {...pageProps} />
-          </ApolloProvider>
+    <UserContext.Provider value={{ uid }}>
+      <ThemeProvider theme={theme}>
+        <Flex flexDirection="column" minHeight="100vh">
+          <Nav userAuthed={userAuthed} />
+          <Flex justifyContent="center" flexGrow="1">
+            <ApolloProvider client={client}>
+              <Component {...pageProps} />
+            </ApolloProvider>
+          </Flex>
         </Flex>
-      </Flex>
-    </ThemeProvider>
+      </ThemeProvider>
+    </UserContext.Provider>
   );
 }
 

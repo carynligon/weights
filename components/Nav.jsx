@@ -31,9 +31,9 @@ const Nav = ({ userAuthed }) => {
         fontWeight="bold"
         sx={{ textDecoration: "underline" }}
         variant="nav"
-        href={pathname.includes("log") ? "/" : "/log"}
+        href={pathname.includes("history") ? "/" : "/history"}
       >
-        {pathname.includes("log") ? "All logs" : "Add new"}
+        {pathname.includes("history") ? "Log" : "History"}
       </Link>
       {userAuthed && (
         <Link
