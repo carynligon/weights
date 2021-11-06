@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { Box, Flex } from "rebass";
 import UserContext from "../contexts/user";
 import Nav from "../components/Nav";
+import styles from "../styles/App.module.scss";
 import "../styles/globals.scss";
 
 const theme = {
@@ -72,16 +73,14 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserContext.Provider value={{ uid }}>
-      <ThemeProvider theme={theme}>
-        <Flex flexDirection="column" minHeight="100vh">
-          <Nav userAuthed={userAuthed} />
-          <Flex justifyContent="center" flexGrow="1">
-            <ApolloProvider client={client}>
-              <Component {...pageProps} />
-            </ApolloProvider>
-          </Flex>
-        </Flex>
-      </ThemeProvider>
+      <Flex flexDirection="column" minHeight="100vh">
+        <Nav userAuthed={userAuthed} />
+        <div className={styles.container}>
+          <ApolloProvider client={client}>
+            <Component {...pageProps} />
+          </ApolloProvider>
+        </div>
+      </Flex>
     </UserContext.Provider>
   );
 }

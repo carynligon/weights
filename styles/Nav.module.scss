@@ -1,0 +1,80 @@
+.container {
+  align-items: center;
+  display: flex;
+  padding: 0.25rem 1rem;
+}
+
+.logo {
+  display: flex;
+  height: 40px;
+
+  svg {
+    height: 100%;
+    width: auto;
+  }
+}
+
+.menuButton {
+  background-color: #000;
+  border-radius: 4px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 30px;
+  justify-content: center;
+  width: 40px;
+
+  &::before,
+  &::after {
+    background-color: #fff;
+    border-radius: 2px;
+    content: "";
+    display: block;
+    height: 3px;
+    position: relative;
+    transition: all 1s;
+    width: 30px;
+  }
+
+  &::before {
+    margin-bottom: 8px;
+  }
+}
+
+.menuButtonOpen {
+  @extend .menuButton;
+
+  &::before {
+    top: 6px;
+    transform: rotate(45deg);
+  }
+  &::after {
+    bottom: 5px;
+    transform: rotate(-45deg);
+  }
+}
+
+.menu {
+  align-items: flex-end;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  justify-content: center;
+  text-align: left;
+  opacity: 1;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  top: 40px;
+  transition: all 1s;
+  right: 1rem;
+}
+
+.menuHidden {
+  @extend .menu;
+
+  opacity: 0;
+  pointer-events: none;
+  top: -0px;
+}

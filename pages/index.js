@@ -80,11 +80,7 @@ const NewLogPage = () => {
   }));
 
   return (
-    <Box
-      sx={{
-        margin: [2, 4, 6],
-      }}
-    >
+    <div>
       <h2>Log</h2>
       <form>
         <Label sx={{ marginTop: [2, 4, 6] }} htmlFor="date">
@@ -225,7 +221,7 @@ const NewLogPage = () => {
       >
         Don't see what you're looking for? Add a new lift!
       </button>
-    </Box>
+    </div>
   );
 };
 
