@@ -52,10 +52,7 @@ const LogItem = ({ userLog, lift, records }) => {
       <div className={styles.data}>
         <p className={styles.lift}>{lift.full_name}</p>
         <Text>
-          <b>Weight:</b> {userLog.weight}lbs
-        </Text>
-        <Text>
-          <b>Reps:</b> {userLog.reps}
+          {userLog.reps}rep{userLog.reps > 1 ? "s" : ""} @ {userLog.weight}lbs
         </Text>
         <Text>
           <b>Rating:</b> {userLog.rating}/5
@@ -63,13 +60,7 @@ const LogItem = ({ userLog, lift, records }) => {
         <Text>
           <b>Notes:</b> {userLog.notes}
         </Text>
-        <Flex alignItems="center">
-          <Text fontWeight={isPR ? "bold" : ""}>
-            <b>{userLog.reps} RM:</b>{" "}
-            {records[`${userLog.lift}-${userLog.reps}`]}
-          </Text>
-          {isPR && <Text marginLeft="1">&#x1F44F;</Text>}
-        </Flex>
+        <Flex alignItems="center">{isPR && "PR!"}</Flex>
       </div>
     </div>
   );
