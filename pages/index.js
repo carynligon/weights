@@ -81,9 +81,13 @@ const NewLogPage = () => {
 
   return (
     <div>
-      <h2>Log</h2>
+      <h2 className={styles.heading}>Log</h2>
       <form>
-        <Label sx={{ marginTop: [2, 4, 6] }} htmlFor="date">
+        <Label
+          className={styles.label}
+          sx={{ marginTop: [2, 4, 6] }}
+          htmlFor="date"
+        >
           Date:
         </Label>
         <input
@@ -100,7 +104,7 @@ const NewLogPage = () => {
           className={styles.input}
         />
         <p>{formState.date}</p>
-        <Label mt={3} mb={1} htmlFor="lift-dropdown">
+        <Label className={styles.label} mt={3} mb={1} htmlFor="lift-dropdown">
           Type of lift:
         </Label>
         <select
@@ -115,7 +119,7 @@ const NewLogPage = () => {
             <option value={option.value}>{option.label}</option>
           ))}
         </select>
-        <Label mt={3} mb={1} htmlFor="reps">
+        <Label className={styles.label} mt={3} mb={1} htmlFor="reps">
           Reps:
         </Label>
         <input
@@ -134,7 +138,7 @@ const NewLogPage = () => {
           className={styles.input}
           value={formState.reps}
         />
-        <Label mt={3} mb={1} htmlFor="weight">
+        <Label className={styles.label} mt={3} mb={1} htmlFor="weight">
           Weight:
         </Label>
         <input
@@ -153,32 +157,42 @@ const NewLogPage = () => {
           className={styles.input}
           value={formState.weight}
         />
-        <Label mt={3} mb={1} htmlFor="rating">
+        <Label className={styles.label} mt={3} mb={1} htmlFor="rating">
           How it went:
         </Label>
         <form id="rating">
           <div>
             <input id="rating-terrible" type="radio" value={1} />
-            <label for="rating-terrible">Terrible</label>
+            <label className={styles.label} for="rating-terrible">
+              Terrible
+            </label>
           </div>
           <div>
             <input id="rating-pretty-bad" type="radio" value={2} />
-            <label for="rating-pretty-bad">Pretty bad</label>
+            <label className={styles.label} for="rating-pretty-bad">
+              Pretty bad
+            </label>
           </div>
           <div>
             <input id="rating-ok" type="radio" value={3} />
-            <label for="rating-ok">Ok</label>
+            <label className={styles.label} for="rating-ok">
+              Ok
+            </label>
           </div>
           <div>
             <input id="rating-pretty-good" type="radio" value={4} />
-            <label for="rating-pretty-good">Pretty good</label>
+            <label className={styles.label} for="rating-pretty-good">
+              Pretty good
+            </label>
           </div>
           <div>
             <input id="rating-great" type="radio" value={5} />
-            <label for="rating-great">Great</label>
+            <label className={styles.label} for="rating-great">
+              Great
+            </label>
           </div>
         </form>
-        <Label mt={3} mb={1} htmlFor="notes">
+        <Label className={styles.label} mt={3} mb={1} htmlFor="notes">
           Notes:
         </Label>
         <textarea

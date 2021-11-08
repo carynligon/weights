@@ -3,14 +3,21 @@ import { useRouter } from "next/router";
 import firebase from "firebase";
 import { Flex, Link, Text, Box } from "rebass";
 import Logo from "./Logo";
+import SideSheet from "./SideSheet";
 import styles from "../styles/Nav.module.scss";
 
 const Nav = ({ userAuthed }) => {
   const { pathname, push } = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sideSheetOpen, setSideSheetOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const toggleSideSheet = () => {
+    console.log("toggle");
+    setSideSheetOpen(!sideSheetOpen);
   };
 
   const userSignOut = async () => {
@@ -25,16 +32,17 @@ const Nav = ({ userAuthed }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.logo}>
-        <Logo />
-      </div>
       <Box mx="auto" />
       <div
         className={menuOpen ? styles.menuButtonOpen : styles.menuButton}
-        onClick={toggleMenu}
+        onClick={toggleSideSheet}
       ></div>
-      <div className={menuOpen ? styles.menu : styles.menuHidden}>
-        <>
+      <div className={menuOpen ? styles.menu : styles.menuHidden}></div>
+      <SideSheet
+        sideSheetOpen={sideSheetOpen}
+        toggleSideSheet={toggleSideSheet}
+      >
+        <div className={styles.navMenu}>
           {userAuthed && (
             <Link
               sx={{
@@ -58,8 +66,8 @@ const Nav = ({ userAuthed }) => {
           >
             {pathname.includes("history") ? "Log" : "History"}
           </Link>
-        </>
-      </div>
+        </div>
+      </SideSheet>
     </div>
   );
 };

@@ -1,0 +1,35 @@
+.container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.containerHidden {
+  @extend .container;
+  z-index: -1;
+}
+
+.close {
+  font-size: 1.5rem;
+}
+
+.content {
+  background: #fff;
+  height: 100vh;
+  overflow-y: scroll;
+  padding: 1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: all 1s;
+  width: 80%;
+  z-index: 100;
+}
+
+.contentHidden {
+  @extend .content;
+  transform: translate3d(0, 0, 0);
+}

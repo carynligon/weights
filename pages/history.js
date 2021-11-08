@@ -4,6 +4,7 @@ import { useLazyQuery, useQuery, gql } from "@apollo/client";
 import { Box, Button, Flex, Text } from "rebass";
 import UserContext from "../contexts/user";
 import LogItem from "../components/LogItem";
+import styles from "../styles/History.module.scss";
 
 const GET_USER = gql`
   query ($uid: String!) {
@@ -81,15 +82,13 @@ const History = () => {
     <Box
       sx={{
         margin: [2, 4, 6],
-        "@media screen and (max-width: 767px)": {
-          width: "90%",
-        },
-        width: "80%",
       }}
     >
-      <button onClick={() => back()}>Back</button>
-      <p>View by lift:</p>
-      <select onChange={handleSelectChange}>
+      <button className={styles.backBtn} onClick={() => back()}>
+        Back
+      </button>
+      <p className={styles.selectorLabel}>View by lift:</p>
+      <select className={styles.select} onChange={handleSelectChange}>
         <option disabled selected>
           Select a lift
         </option>

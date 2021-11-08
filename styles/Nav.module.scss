@@ -1,7 +1,7 @@
 .container {
   align-items: center;
   display: flex;
-  padding: 0.25rem 1rem;
+  padding: 1rem;
 }
 
 .logo {
@@ -15,7 +15,7 @@
 }
 
 .menuButton {
-  background-color: #000;
+  border: 3px solid #fff;
   border-radius: 4px;
   align-items: center;
   display: flex;
@@ -33,7 +33,7 @@
     height: 3px;
     position: relative;
     transition: all 1s;
-    width: 30px;
+    width: 26px;
   }
 
   &::before {
@@ -56,7 +56,9 @@
 
 .menu {
   align-items: flex-end;
-  background-color: #000;
+  background-color: #004346;
+  border-radius: 4px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 3px rgba(0, 0, 0, 0.23);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -66,7 +68,7 @@
   opacity: 1;
   padding: 0.5rem 1rem;
   position: absolute;
-  top: 40px;
+  top: 48px;
   transition: all 1s;
   right: 1rem;
 }
@@ -77,4 +79,10 @@
   opacity: 0;
   pointer-events: none;
   top: -0px;
+}
+
+.navMenu {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
 }
